@@ -1,0 +1,179 @@
+{layout name="layout"}
+<div class="container-fluid">
+    <!--路径导航开始-->
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('admin/Index/index')}">Home</a></li>
+            <li><a href="{:url('admin/User/index')}">用户管理</a></li>
+
+        </ol>
+    </div>
+    <!--路径导航结束-->
+    <div class="row">
+        <!--左边的导航开始-->
+        <div class="col-md-3">
+            <div class="list-group" id="nav_left">
+                <a href="{:url('admin/Index/index')}" class="list-group-item">
+                    网站信息
+                </a>
+                <a href="{:url('admin/User/index')}" class="list-group-item active">用户管理</a>
+                <a href="{:url('admin/Article/index')}" class="list-group-item">文章管理</a>
+                <a href="{:url('admin/Ask/index')}" class="list-group-item">问题管理</a>
+
+            </div>
+        </div>
+        <!--左边的导航结束-->
+        <!--右边的功能开始-->
+        <div class="col-md-9 right_block" id="display_right">
+            <!--右边的导航开始-->
+            <div class="" id="user-nav">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="{:url('admin/user/index')}">用户信息</a></li>
+                    <li role="presentation"><a href="__STATIC__/admin/User/count" target="usercount">导游申请</a></li>
+                    <li role="presentation"><a href="__STATIC__/admin/User/count" target="usercount">用户统计</a></li>
+
+                </ul>
+            </div>
+            <!--右边的导航结束-->
+            <div class="myusermstyle" id="user-block">
+
+                <div class="userManage">
+                    <!-- 用户管理--用户搜索开始 -->
+                    <form class="" action="searchUser" method="post">
+                        <div class="clearfix">
+                            <div class="navbar-form navbar-left" role="search" method="post"
+                                 action="{:url('admin/User/search')}">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="搜索用户" name="keywords"
+                                           style="width:400px;">
+                                </div>
+                                <button type="submit" class="btn btn-default" id="searchbtn">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!--用户搜索结束-->
+                    <div class="">
+                        <table class="table table-bordered table-hover">
+                            <caption><h3>网站所有用户表</h3></caption>
+                            <thead>
+                            <tr align="center">
+                                <th>用户ID</th>
+                                <th>用户名</th>
+                                <th>所在地</th>
+                                <th>性别</th>
+                                <th>注册时间</th>
+                                <th>上次登录时间</th>
+                                <th>编辑</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist id="data" name="list"}
+                            <tr align="center">
+                                <td>{$data.uid}</td>
+                                <td><a href="{:url('admin/User/detail',['uid'=>$data['uid']])}" title="点击查看用户详情">{$data.username}</a>
+                                </td>
+                                <td>{$data.city}</td>
+                                {if $data.sex}
+                                <td>男</td>
+                                {else}
+                                <td>女</td>
+                                {/if}
+                                <td>{$data.create_time}</td>
+                                <td>{$data.update_time}</td>
+
+                                <?php if ($data['delete_time']=='0000-00-00 00:00:00'):?>
+                                <td><a href="{:url('admin/User/delete',['uid'=>$data['uid']])}">删除</a></td>
+                                {else}
+                                <td><a href="{:url('admin/User/resetUser',['uid'=>$data['uid']])}">恢复</a></td>
+                                <?php endif;?>
+                            </tr>
+                            {/volist}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        {$page}
+                    </div>
+                </div>
+                <!--导游申请开始-->
+                <div class="guidemanage hide">
+                    <!--导游统计开始-->
+                    <div class="count">
+                        <span>申请导游的总人数：{$allCount}</span>
+                    </div>
+                    <table class="table table-bordered table-hover">
+
+                        <caption><h3>网站导游申请表</h3></caption>
+                        <thead>
+                        <tr align="center">
+                            <th>申请ID</th>
+                            <th>用户ID</th>
+                            <th>用户名</th>
+                            <th>申请时间</th>
+                            <th>申请状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist id="data" name="guidedata"}
+                        <tr align="center">
+                            <td>{$data.id}</td>
+                            <td>{$data.uid}</td>
+                            <td><a href="{:url('admin/User/guide',['id'=>$data['id']])}" title="点击查看详情">
+                                {$data.name}</a></td>
+                            <td>{$data.apply_time}</td>
+                            {if $data.status == 0}
+                            <td>未审核</td>
+                            {/if}
+                            {if $data.status == 2}
+                            <td>审核中</td>
+                            {/if}
+                            {if $data.status == 1}
+                            <td>已通过审核</td>
+
+                            {/if}
+
+                        </tr>
+                        {/volist}
+
+                        </tbody>
+                    </table>
+                </div>
+                <!--导游申请结束-->
+
+                <!-- 数据统计 -->
+
+                <div class="user-count hide">
+                    <iframe name="usercount" width="100%" height="500px" frameborder=0>
+
+                    </iframe>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        var list = $('#user-block').children('div');
+
+        var $li = $('#user-nav ul li');
+
+        $li.click(function () {
+
+            $(this).addClass('active').siblings().removeClass('active');
+
+            var index = $li.index(this);
+
+            list.eq(index).removeClass('hide').siblings().addClass('hide');
+
+            //return false;
+
+        })
+
+    })
+
+</script>

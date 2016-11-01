@@ -1,0 +1,96 @@
+{layout name="layout"}
+<div class="container">
+    <div class="row">
+        <h4 style="padding-left: 20px;" id="post">
+            <span class="glyphicon glyphicon-plane" style="color: #33ff44;"></span>&nbsp;
+            <span style="font-size: 16px;">同城游记精选</span>
+
+            <span id="openp" class="glyphicon glyphicon-chevron-down" style="font-size: 12px;display: none;" title="展开列表"></span>
+            <span id="closep" class="glyphicon glyphicon-chevron-up" style="font-size: 12px;" title="收起列表"></span>
+        </h4>
+        {foreach $posts as $val}
+        <div style="padding-left: 20px;border-top: 1px dashed #3f4;">
+            <h4><a href="__STATIC__/index/article/detail/id/{$val['id']}.html">{$val['title']}</a></h4>
+            <p>作者：{$val['author']}&nbsp;发表时间：{$val['create_time']}</p>
+            <div><?=mb_substr(strip_tags($val['content']), 0, 150);?></div>
+        </div>
+        {/foreach}
+    </div>
+    <hr/>
+    <div class="row">
+        <h4 style="padding-left: 20px;" id="guide">
+            <span class="glyphicon glyphicon-bullhorn" style="color: #34f;"></span>&nbsp;
+            <span style="font-size: 16px;">同城导游推荐</span>
+            <span id="openg" class="glyphicon glyphicon-chevron-down" style="font-size: 12px;" title="展开列表"></span>
+            <span id="closeg" class="glyphicon glyphicon-chevron-up" style="font-size: 12px;display: none;" title="收起列表"></span>
+        </h4>
+        {foreach $guide as $val}
+        <div style="padding-left: 20px;border-top: 1px dashed #3f4;font-size: 12px;">
+            <p>导游：<img src="__STATIC__/{$val['avatar']}_32x32.jpg" /> <a href="__STATIC__/index/user/detail/u/{$val['uid']}.html"><i style="font-size: 16px;">{$val['username']}</i></a>&nbsp;现在：{$val['city']}&nbsp;曾与<span style="color: #00b7ee;font-size: 14px;">{$val['rate']}</span>人（团队）合作过</p>
+        </div>
+        {/foreach}
+    </div>
+    <hr/>
+    <div class="row">
+        <h4 style="padding-left: 20px;" id="friend">
+            <span class="glyphicon glyphicon-heart" style="color: #f34;"></span>&nbsp;
+            <span style="font-size: 16px;">同城好友</span>
+
+            <span id="openf" class="glyphicon glyphicon-chevron-down" style="font-size: 12px;" title="展开列表"></span>
+            <span id="closef" class="glyphicon glyphicon-chevron-up" style="font-size: 12px;display: none;" title="收起列表"></span>
+        </h4>
+        {foreach $friends as $val}
+        <div style="padding-left: 20px;border-top: 1px dashed #3f4;font-size: 12px;">
+            <p>会员：<img src="__STATIC__/{$val['avatar']}_32x32.jpg" /> <a href="__STATIC__/index/user/detail/u/{$val['uid']}.html"><i style="font-size: 16px;">{$val['username']}</i></a>&nbsp;现在：{$val['city']}&nbsp;</p>
+        </div>
+        {/foreach}
+    </div>
+    <hr/>
+</div>
+<script>
+    $(function () {
+        var i = 1;
+        var j = 1;
+        var k = 1;
+        $('#post').click(function () {
+            if (0 == i) {
+                $('#openp').hide();
+                $('#closep').show();
+                $(this).siblings().show();
+                i = 1;
+            } else {
+                $('#openp').show();
+                $('#closep').hide();
+                $(this).siblings().hide();
+                i = 0;
+            }
+        });
+        $('#guide').click(function () {
+            if (0 == j) {
+                $('#openg').hide();
+                $('#closeg').show();
+                $(this).siblings().show();
+                j = 1;
+            } else {
+                $('#openg').show();
+                $('#closeg').hide();
+                $(this).siblings().hide();
+                j = 0;
+            }
+        });
+        $('#friend').click(function () {
+            if (0 == k) {
+                $('#openf').hide();
+                $('#closef').show();
+                $(this).siblings().show();
+                k = 1;
+            } else {
+                $('#openf').show();
+                $('#closef').hide();
+                $(this).siblings().hide();
+                k = 0;
+            }
+        });
+
+    })
+</script>

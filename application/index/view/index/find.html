@@ -1,0 +1,37 @@
+{layout name="layout"}
+<div class="container" style="min-height: 500px;">
+    <h4>查询到<span style="color: #f34;">{$user|count}</span>个和“<span style="color: #f34;">{$keyword}</span>”相关的用户</h4>
+    <hr/>
+    <div class="row" style="font-size: 12px;">
+        {foreach $user as $val}
+        <p style="text-indent: 2em;"><img src="/{$val['avatar']}_32x32.jpg"/> <a style="font-size: 16px;"
+                                                                                 href="__STATIC__/index/user/detail/u/{$val['uid']}.html">{$val['username']}</a>
+            <span>{$val['motto']}</span></p>
+        {/foreach}
+    </div>
+    <h4>查询到<span style="color: #f34;">{$article|count}</span>个和“<span style="color: #f34;">{$keyword}</span>”相关的文章</h4>
+    <hr/>
+    <div class="row" style="font-size: 12px;">
+        {foreach $article as $val}
+        <p style="text-indent: 2em;font-size: 16px;"><a href="__STATIC__/index/article/detail/id/{$val['id']}.html">{$val['title']}</a>
+        </p>
+        <p style="text-indent: 2em;padding:5px 10px;">作者：<a href="__STATIC__/index/user/detail/u/{$val['uid']}.html">{$val['author']}</a>
+            发表时间：{$val['create_time']} 目的地：{$val['destination']}
+        </p>
+        <p style="text-indent: 2em;padding:5px 10px;line-height: 24px;">
+            <?=mb_substr(strip_tags($val['content']),0,150);?>
+        </p>
+        <hr/>
+        {/foreach}
+    </div>
+
+    <h4>查询到<span style="color: #f34;">{$area|count}</span>个和“<span style="color: #f34;">{$keyword}</span>”相关的城市</h4>
+    <hr/>
+    <div class="row" style="font-size: 12px;">
+        {foreach $area as $val}
+        <p style="text-indent: 2em;"><a style="font-size: 16px;"
+                                        href="__STATIC__/index/user/detail/u/{$val['id']}.html">{$val['title']}</a> 目的地：<span
+                style="color: #3f4;">{$val['destination']}</span></p>
+        {/foreach}
+    </div>
+</div>

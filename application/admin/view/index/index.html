@@ -1,0 +1,68 @@
+{layout name="layout"}
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('admin/index/index')}">Home</a></li>
+            <li><a href="#">网站管理</a></li>
+
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group" id="nav_left">
+                <a href="{:url('admin/Index/index')}" class="list-group-item active">
+                    网站信息
+                </a>
+                <a href="{:url('admin/User/index')}" class="list-group-item">用户管理</a>
+                <a href="{:url('admin/Article/index')}" class="list-group-item">文章管理</a>
+                <a href="{:url('admin/Ask/index')}" class="list-group-item">问题管理</a>
+
+            </div>
+        </div>
+        <div class="col-md-9 right_block" id="display_right"
+             style="border: 1px solid #ededed;border-radius: 5px;min-height: 400px;">
+            <form class="myform" method="post" action="{:url('admin/index/webinfo')}">
+                <div class="row">
+                    <div class="col-md-4">
+                        设置首页轮播
+                        <input class="form-control" type="text" name="head" placeholder="文章ID‘,’分开(1,2,3)"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" class="btn btn-primary" value="提交"/>
+                </div>
+            </form>
+            <form class="myform" method="post" action="{:url('admin/index/friend')}">
+                设置友情链接
+                <?php
+                        $friend = include('friend.php');
+                        foreach ($friend as $k => $v):
+                ?>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="url[]" placeholder="URL地址" value="{$k}"/>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="title[]" placeholder="网站名称" value="{$v}"/>
+                    </div>
+                </div>
+                <?php endforeach;?>
+                <?php
+                for ($i = 0; $i < (10 - count($friend)); $i++) :
+                ?>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="url[]" placeholder="URL地址"/>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="title[]" placeholder="网站名称"/>
+                    </div>
+                </div>
+                <?php endfor;?>
+                <div class="row">
+                    <input type="submit" class="btn btn-primary" value="提交"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

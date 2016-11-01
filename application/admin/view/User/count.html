@@ -1,0 +1,83 @@
+<html>
+<head>
+    <script type="text/javascript" src="__STATIC__/static/js/echarts.js"></script>
+    <script type="text/javascript" src="__STATIC__/static/js/jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+<div class="row" id="alluser">
+    <span> 用户总数：{$count} </span>
+</div>
+<div class="row">
+    <div id="main" style="height:400px; width:60%"></div>
+</div>
+<div>
+    <div id="stylepie" style="height:400; width:40%">
+    </div>
+
+    <script>
+
+        var myChart = echarts.init(document.getElementById('main'));  // 直接开始初始化，还是要用原生javascript
+        var option = {
+
+            title: {
+                text: '最近一周注册用户数量折线图',
+                x: 'center',
+                textStyle: {
+                    fontSize: 15,
+                    fontWeight: 'bolder',
+                    color: 'red'
+                }
+            },
+            legend: {
+
+                data: ['用户数量'],
+                x: '600',
+
+            },
+
+            xAxis: [
+                {
+                    type: 'category',
+                    data: [],
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                }
+            ],
+            series: [
+                {
+                    name: '用户数量',
+                    type: 'line',
+                    data: []
+                }
+            ],
+            grid: {},
+            tooltip: {},
+        };
+
+        $.ajax({
+            url: '__STATIC__/admin/User/select',
+
+            type: 'post',
+
+            dataType: 'json',
+
+            success: function (data) {
+                //alert(data.series.data);
+                option.series[0] = data.series;
+                option.xAxis[0] = data.aXias;
+                //alert(option.series[0].data);
+                myChart.hideLoading();
+                myChart.setOption(option);
+            }
+
+        });
+        // alert(111);
+        myChart.setOption(option);
+    </script>
+
+</body>
+</html>

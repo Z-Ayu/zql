@@ -1,0 +1,140 @@
+{layout name="nofooter"}
+<div style="background-color: #f8f8f8;margin-top: 0;">
+<div class="container" style="background-color: #fcfcfc;padding-top: 20px;min-height: 600px;">
+    <div class="row">
+        <div class="col-md-3" style="text-align: center;">
+            <div class="user-avatar">
+                <img src="__STATIC__/{$avatar}_128x128.jpg"/>
+            </div>
+            <h3>{$username}</h3>
+            <p>
+                <?=(1 == $sex ? '<span class="sex" title="男">♂</span>' : '<span class="sex"
+                                                                                style="background-color:pink;"
+                                                                                title="女">♀</span>');?>
+                <span class="level" title="等级">Lv.{$level}</span>
+                <?=(1 == $guide ? '<span class="guide">导游</span>' : '');?>
+            </p>
+            <p>
+                <?php if (!empty(Session('uid'))) :?>
+                <?=in_array($uid, array_keys(json_decode(Session('user')['follow_uid'], true))) ? '<a target="_self" href="__STATIC__/index/user/follow/a/c.html?u=' . $uid . '">
+                <button type="button" class="btn btn-info btn-xs">取消关注</button>
+                </a>' : '<a target="_self" href="__STATIC__/index/user/follow.html?u=' . $uid . '&name=' .$username. '">
+                <button type="button" class="btn btn-danger btn-xs">关注TA</button>
+            </a>';?>
+                <?php else:?>
+                <a href="__STATIC__/index/user/signin.html" target="_self">
+                    <button type="button" class="btn btn-danger btn-xs">关注TA</button>
+                </a>
+                <?php endif;?>
+
+                <?php if (!empty(Session('uid'))) :?>
+                <?=in_array($uid, array_keys(json_decode(Session('user')['friends'], true))) ? '<button type="button" class="btn btn-success btn-xs">已是好友</button>' :
+                '<a target="_self" href="__STATIC__/index/user/apply.html?u=' . $uid . '&name=' .$username. '&a=' .$apply. '"><button type="button" class="btn btn-danger btn-xs">加好友</button></a>';?>
+                <?php else:?>
+                <a href="__STATIC__/index/user/signin.html" target="_self">
+                    <button type="button" class="btn btn-danger btn-xs">加好友</button>
+                </a>
+                <?php endif;?>
+            </p>
+            <p><span><?=empty($local) ? '' : '目前在：' . $local;?></span></p>
+            <p>“ {if empty($motto)} 这个家伙很懒，没有留下任何东西…… {else} {$motto} {/if} ”</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3><?=empty($follow) ? 0 : count(json_decode($follow,true));?></h3>
+                    <p>关注</p>
+                </div>
+                <div class="col-md-6">
+                    <h3><?=empty($fans) ? 0 : count(json_decode($fans,true));?></h3>
+                    <p>粉丝</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9" style="background-color: #fefefe;margin: 0;">
+            <div class="row text-center">
+                <div class="col-md-2 col-md-offset-4">
+                    <h3 class="glyphicon glyphicon-pencil"></h3>
+                    <p><a href="javascript:;" onclick="tour()">Ta的游记</a></p>
+                </div>
+                <div class="col-md-2">
+                    <h3 class="glyphicon glyphicon-question-sign"></h3>
+                    <p><a href="javascript:;" onclick="ask()">Ta的问答</a></p>
+                </div>
+            </div>
+
+            <div class="row" style="margin: 10px;">
+                <div id="article">
+                    {if empty($articleData)}
+                    <h2>暂时还没有任何游记哦……</h2>
+                    {else}
+                    {foreach $articleData as $val}
+                    <article class="row" style="padding: 10px 15px;">
+                        <div class="desc">
+                            <a class="title" href="__STATIC__/index/article/detail/id/{$val['id']}.html"
+                               target="_self" style="font-size: 16px;">{$val['title']}</a><?php echo $val['delete_time'] == '0000-00-00 00:00:00' ? '' : ' <b style="color:#f34;font-size:12px;">文章已删除</b> <a href="__STATIC__/index/article/back/id/' .$val['id']. '">恢复文章</a>';?>
+
+                            {if 1 == $val['great']}
+                            <span class="label label-warning">精</span>
+                            {/if}<br/><br/>
+
+                            <p class="time" style="color:#a1a1a1;">
+                        <span>作者：<a
+                                href="__STATIC__/index/user/detail/u/{$val['uid']}.html">{$val['author']}</a></span>
+                                <span title="发表时间"> 发表于：{$val['create_time']}</span>
+                            </p>
+                            <div class="brief"><?=mb_substr(strip_tags($val['content']), 0, rand(150,280));?></div>
+                            <div class="author">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-center">
+                                <?php
+                                $pre = '/<img(.*)src="(.*)"/imsU';
+                                preg_match_all($pre, $val['content'], $result);
+                                if (!empty($result[2])) {
+                                $i = 0;
+                                foreach ($result[2] as $val) {
+                                if (2 >= $i) {
+                                echo '<img class="col-md-4" src="' . $val . '" style="max-width: 300px;"/>';
+                                }
+                                $i++;
+                                }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </article>
+                    <hr/>
+                    {/foreach}
+                    {/if}
+                </div>
+                <div id="request" style="display: none;">
+                    {if empty($askData)}
+                    <h2>暂时还没有任何问答哦……</h2>
+                    {else}
+                    {foreach $askData as $val}
+                    <p style="font-size: 16px;"><a href="__STATIC__/index/index/detail/askid/{$val['askid']}.html">{$val['title']}</a></p>
+                    <p>作者：<a href="__STATIC__/index/user/detail/u/{$uid}.html">{$username}</a>
+                        <span style="color:#999;"> 提问于：{$val['create_time']}</span></p>
+                    <div>{$val['content']|strip_tags}</div>
+                    <hr/>
+                    {/foreach}
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function tour() {
+        document.getElementById('article').style.display = 'block';
+        document.getElementById('request').style.display = 'none';
+    }
+
+    function ask() {
+        document.getElementById('article').style.display = 'none';
+        document.getElementById('request').style.display = 'block';
+    }
+</script>
+</div>

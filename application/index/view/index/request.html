@@ -1,0 +1,300 @@
+{layout name="layout"}
+<div class="container-flaud">
+    <div class="row font-yh" id="top">
+        <div class="col-md-8 col-md-offset-1">
+            <div class="row">
+                <form action="{:url('index/index/search')}" method="post">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="input-group">
+                            <input type="text" name="keywords" class="form-control" placeholder="先搜搜看，你的问题也许已经解决了呢！">
+                            <span class="input-group-btn ">
+								<input type="submit" class="btn btn-default" value="搜索"></button>
+							</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row question-nav col-md-offset-1" id="show-nav">
+                <ul class="nav nav-pills" role="tablist">
+                    <li role="presentation" class="active"><a href="#">热门问题</a></li>
+                    <li role="presentation"><a href="#">最近问题</a></li>
+                    <li role="presentation"><a href="#">待回答问题</a></li>
+                </ul>
+            </div>
+            <div class="row col-md-offset-1 list-block" id="show-block">
+                <!-- 热门问题板块 -->
+                <div class="hot-block">
+                    <!-- 问题列表部分 -->
+                    <ul id="hot">
+                        {volist name="hotdata" id="data"}
+                        <li style="display: none;">
+                            <div class="question-title"><a href="{:url('index/index/detail',['askid'=>$data['askid']])}"
+                                                           style="color:orange"><h4>{$data.title}</h4></a></div>
+                            <div class="baseinfo">
+                                <span class=""><img src="__STATIC__/{$data.avatar}_32x32.jpg" class="img-circle"
+                                                    alt="用户头像"></span>
+                                <span class="basespan"><a href="#">{$data.username}</a></span>
+                                <span class="basespan">等级：{$data['level']}</span>
+                            </div>
+
+                            <div class="title-block row">
+                                {if $data['first_img']}
+                                <div class="col-md-2"><img src="{$data['first_img']}" width="128" height="128"></div>
+                                {/if}
+                                <div class="text col-md-10">
+                                    <p id="content-block">
+                                        <?php
+											echo strip_tags($data['content']);
+										?>
+                                    </p>
+                                </div>
+                            </div>
+                            {if $data['keywords']}
+                            <div class="keywords">
+                                <button class="button-style">{$data['keywords']}</button>
+                            </div>
+                            {/if}
+                            <div class="anotherinfo row clearfix">
+                                <span class="great" id="hotgreatnum{$data['askid']}">12323</span>
+                                <span class="glyphicon glyphicon-eye-open" title="阅读量"></span>
+                                <i>{$data['scan']}</i>
+                                <span> 回答：{$data['answernum']}</span>
+                                <span>发布于：{$data['create_time']}</span>
+                            </div>
+                            <input type="hidden" value="{$data['askid']}" id="hidden{$data['askid']}">
+                            <script type="text/javascript">
+
+                                $(function () {
+                                    var $askid = $("#hidden{$data['askid']}").attr('value');
+                                    $.ajax({
+                                        url: "{:url('index/index/greatnum')}",
+                                        type: "post",
+                                        dataType: "json",
+                                        data: {
+                                            'askid': $askid,
+                                        },
+                                        success: function (data) {
+                                            $("#hotgreatnum{$data['askid']}").html(data.greatnum);
+
+                                        }
+                                    });
+                                })
+                            </script>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <!-- 问题列表部分结束 -->
+                </div>
+                <!-- 热门问题板块结束 -->
+
+                <!-- 最新板块开始 -->
+                <div class="hot-block hide">
+                    <ul id="new">
+                        {volist name="lastdata" id="data"}
+                        <li>
+                            <div class="question-title"><a
+                                    href="{:url('index/index/detail',['askid'=>$data['askid'],])}" style="color:orange">
+                                <h4>{$data.title}</h4></a></div>
+                            <div class="baseinfo">
+                                <span class=""><img src="__STATIC__/{$data.avatar}_32x32.jpg" class="img-circle"
+                                                    alt="用户头像"></span>
+                                <span class="basespan"><a href="#">{$data.username}</a></span>
+                                <span class="basespan">等级：{$data['level']}</span>
+                            </div>
+
+                            <div class="title-block row">
+                                {if $data['first_img']}
+                                <div class="col-md-2"><img src="{$data.first_img}" width="128" height="128"></div>
+                                {/if}
+                                <div class="text col-md-10">
+                                    <p id="content-block">
+                                        <?php
+											echo strip_tags($data['content']);
+										?>
+                                    </p>
+                                </div>
+
+                            </div>
+                            {if $data['keywords']}
+                            <div class="keywords">
+                                <button class="button-style">{$data['keywords']}</button>
+
+                            </div>
+                            {/if}
+                            <div class="anotherinfo row clearfix">
+                                <span class="great">{$data['great']}</span>
+                                <span class="glyphicon glyphicon-eye-open" title="阅读量">
+									
+								</span>
+                                <i>{$data['scan']}</i>
+                                <span> 回答：{$data['answernum']}</span>
+                                <span>发布于：{$data['create_time']}</span>
+                            </div>
+                        </li>
+                        {/volist}
+
+                    </ul>
+                </div>
+                <!-- 最新板块结束 -->
+
+                <!-- 待回答板块开始 -->
+                <div class="hot-block hide">
+                    <ul id="wait">
+                        {volist name="waitdata" id="data"}
+                        <li>
+                            <div class="baseinfo col-md-1" style="margin-top:20px">
+                                <span class="newspan" style="margin-left:10px;"><img
+                                        src="__STATIC__/{$data['avatar']}_32x32.jpg" class="img-circle"
+                                        alt="用户头像"></span>
+                            </div>
+
+                            <div class="title-block col-md-11">
+
+                                <div class="text">
+                                    <h4><a href="{:url('index/index/detail',['askid'=>$data['askid'],])}"
+                                           style="color:#555;">{$data['title']}</a></h4>
+                                    <p>
+                                        <?php echo strip_tags($data['content'])?>
+                                    </p>
+                                </div>
+                            </div>
+                            {if $data['keywords']}
+                            <div class="keywords">
+                                <button class="button-style">{$data['keywords']}</button>
+
+                            </div>
+                            {/if}
+                            <div class="anotherinfo row clearfix">
+                                <span class="great">{$data['great']}</span>
+                                <span class="glyphicon glyphicon-eye-open" title="阅读量"></span>
+                                <i>{$data['scan']}</i>
+                                <a href="#"><span class="waiting"></span></a>
+                                <span>发布于：{$data['create_time']}</span>
+                            </div>
+                        </li>
+                        {/volist}
+
+                    </ul>
+                </div>
+                <!-- 待回答板块结束 -->
+            </div>
+        </div>
+        <!-- 右边板块开始 -->
+        <div class="col-md-2 right-block">
+            {if $Think.session.uid}
+            <div class="row to-question">
+                <a href="{:url('index/index/ask')}" id="requestbtn">
+                    <button>我要提问</button>
+                </a>
+            </div>
+            {else}
+            <div class="row to-question">
+                <a href="{:url('index/user/signin')}" id="requestbtn">
+                    <button>登陆后进行提问</button>
+                </a>
+            </div>
+            {/if}
+            <!-- 我要提问板块js  -->
+
+            <!-- 我要提问板块js结束 -->
+            <div class="rank-list">
+                <h4>排行榜</h4>
+                <div class="list" id="rank-list">
+                    <ul>
+                        {volist name="rankdata" id="data"}
+                        <li class="rank-li">
+                            <em></em>
+                            <div class="user-rank">
+                                <div class="col-md-4">
+                                    <a href="#"><img class="img-circle" src="__STATIC__/{$data['avatar']}_32x32.jpg"
+                                                     width="46px" height="46px"></a>
+                                </div>
+                                <div class="col-md-5 user-info">
+                                    <span class="name"><a href="__STATIC__/index/user/detail/u/{$data['uid']}.html">{$data['username']}</a></span>
+                                </div>
+                                <div class="col-md-3">
+									<span class="num">
+										{$data['scan']}
+									</span>
+                                </div>
+                            </div>
+                        </li>
+                        {/volist}
+
+                    </ul>
+                </div>
+
+                <div class="fix-block">
+                    <a href="#top">回到顶部</a>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var $ranklist = $('#rank-list ul li');
+
+                        for (var i = 0; i < $ranklist.length; i++) {
+                            $obj = $ranklist[i];
+                            switch (i) {
+                                case 0:
+                                    $obj.style.background = "url('__STATIC__/static/images/rank0.png') no-repeat";
+                                    break;
+                                case 1:
+                                    $obj.style.background = "url('__STATIC__/static/images/rank1.png') no-repeat";
+                                    break;
+                                case 2:
+                                    $obj.style.background = "url('__STATIC__/static/images/rank2.png') no-repeat";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            $obj.style.backgroundPositionX = 0;
+                            $obj.style.backgroundPositionY = '14px';
+                        }
+                    })
+                </script>
+                <!-- 排行榜结束 -->
+            </div>
+        </div>
+        <!-- 右边板块结束 -->
+    </div>
+    <div>
+        <!-- 左边板块导航栏 -->
+        <script type="text/javascript">
+            $(function () {
+                var $list = $('#show-nav ul li');
+                var $block = $('#show-block').children('div');
+                $list.click(function () {
+                    $(this).addClass('active').siblings().removeClass('active');
+                    var index = $list.index(this);
+                    $block.eq(index).removeClass('hide').siblings().addClass('hide');
+                })
+            })
+        </script>
+    </div>
+</div>
+<script>
+    window.onload = window.onresize = window.onscroll = function () {
+        // 获取li标签
+        var aHotLi = $('#hot').children('li');
+        // 获取可视区域的高
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        // 获取滚动距离
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+        var oBottom = clientHeight + scrollTop;
+
+        for (var i = 0; i < aHotLi.length; i++) {
+            var top = aHotLi[i].offsetTop;
+            if (top <= oBottom) {
+
+                aHotLi[i].style.display = 'block';
+
+            } else {
+
+                aHotLi[i].style.display = 'none';
+
+            }
+            //alert(top + '--->' + oBottom);
+        }
+    }
+</script>

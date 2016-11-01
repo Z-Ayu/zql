@@ -1,0 +1,157 @@
+{layout name="layout"}
+<div class="row">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="__STATIC__/admin/index/index">后台管理</a></li>
+            <li><a href="__STATIC__/admin/user/index">用户管理</a></li>
+            <li class="active">用户详情</li>
+        </ol>
+    </div>
+    <div class="col-md-3" style="border:1px red solid;">
+        <div class="row">
+            <div class="col-md-1 col-md-offset-2">
+                <img src="__STATIC__/{$userdata.avatar}_128x128.jpg" width="64px" height="64px">
+            </div>
+
+        </div>
+        <div class="row" style="margin-top:30px;text-align:center;">
+            <p class="bg-primary" style="height:40px;line-height:40px">用户名:{$userdata['username']}</p>
+            <p class="bg-success" style="height:40px;line-height:40px">等级：{$userdata.level}</p>
+            <p class="bg-info" style="height:40px;line-height:40px">关注：{$follownum}</p>
+            <p class="bg-info" style="height:40px;line-height:40px">粉丝：{$fansnum}</p>
+            <p class="bg-info" style="height:40px;line-height:40px">用户类型：{if $userdata['is_guide']}导游{else}游客{/if}</p>
+            <p class="bg-warning" style="height:40px;line-height:40px">好友个数：{$friendsnum}</p>
+
+        </div>
+
+    </div>
+    <div class="col-md-8" style="margin-left:30px;">
+        <!-- 详细资料 -->
+        <div class="row" style="font-size:16px;width:100%;">
+            <table class="table" border="1">
+                <caption><h3 style="text-align:center;">用户详细信息</h3></caption>
+                <tbody>
+                <tr>
+                    <td><span class="font-red">注册登录时间:</span><span
+                            style="margin-left:5px;">{$userdata['create_time']}</span></td>
+
+                    <td><span class="font-red">注册IP地址:</span>
+                        <span style="margin-left:5px;">{$userdata['create_ip']}</span></td>
+
+                </tr>
+                <tr>
+                    <td><span class="font-red">上次登录时间:</span><span
+                            style="margin-left:5px;">{$userdata['update_time']}</span></td>
+
+                    <td><span class="font-red">上次登录地址:</span>
+                        <span style="margin-left:5px;">{$userdata['last_ip']}</span></td>
+
+                </tr>
+                <tr>
+                    <td colspan="2"><span class="font-red">用户注册生日：</span><span style="margin-left:5px;">{$userdata['birthday']}</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><span class="font-red">已发文章数量：</span><span style="margin-left:5px;">{$articlenum}</span></td>
+                    <td><span class="font-red">收藏文章个数: </span><span style="margin-left:5px;"> {$keepnum}</span></td>
+                </tr>
+                <tr>
+                    <td><span class="font-red">已发问题数量：</span><span style="margin-left:5px;">{$asknum}</span></td>
+                    <td><span class="font-red">回答问题数量: </span><span style="margin-left:5px;"> {$answernum}</span></td>
+                </tr>
+                <tr>
+                    <td><span class="font-red">组团次数：</span><span style="margin-left:5px;">{$peernum}</span></td>
+                    <td><span class="font-red">拼团次数：</span><span style="margin-left:5px;">{$joinnum}</span></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <!--用户发表的所有游记的列表-->
+        {if $article}
+        <div class="row" style="font-size:16px;width:100%;">
+            <table class="table table-bordered">
+                <caption><h3 style="text-align:center;">用户游记详情</h3></caption>
+                <thead>
+                <tr>
+                    <th>文章ID</th>
+                    <th>文章标题</th>
+                    <th>文章关键字</th>
+                    <th>发表时间</th>
+                    <th>评论个数</th>
+                    <th>编辑</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="article" id="data"}
+                <tr align="center">
+                    <td>{$data.id}</td>
+                    <td>
+                        <a href="{:url('admin/article/detail',['id'=>$data['id']])}"><?php echo mb_substr($data['title'],0,7);?></a>
+                    </td>
+                    <td>{$data.destination}</td>
+                    <td>{$data.create_time}</td>
+                    <td>{$data.comment_num}</td>
+                    <td><a href="{:url('admin/article/delete',['id'=>$data['id']])}">
+                        <?php if($data['delete_time']=='0000-00-00 00:00:00'):?>
+                        <span> 删除</span>
+                        {else}
+                        <span>恢复</span>
+                        <?php endif;?>
+                    </a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+        {/if}
+        <!--用户发表的所有的游记的列表结束-->
+        <!--用户的问答详情开始-->
+        {if $askdata}
+        <div>
+            <div class="row" style="font-size:16px;width:100%;">
+                <table class="table table-bordered">
+                    <caption><h3 style="text-align:center;">用户问题详情</h3></caption>
+                    <thead>
+                    <tr>
+                        <th>问题ID</th>
+                        <th>标题</th>
+                        <th>关键字</th>
+                        <th>回答数</th>
+                        <th>浏览数</th>
+                        <th>举报数</th>
+                        <th>创建时间</th>
+                        <th>编辑</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="askdata" id="data"}
+                    <tr align="center">
+                        <td>{$data.askid}</td>
+                        <td>
+                            <a href="{:url('admin/ask/detail', ['askid'=>$data['askid']])}"><?php echo mb_substr($data['title'],0,7);?></a>
+                        </td>
+                        <td>{$data.keywords}</td>
+                        <td>{$data.answernum}</td>
+                        <td>{$data.scan}</td>
+                        <td>{$data.reportnum}</td>
+                        <td>{$data.create_time}</td>
+                        <td>
+                            <?php if($data['delete_time']=='0000-00-00 00:00:00'):?>
+                            <span> <a href="{:url('admin/ask/delete',['askid'=>$data['askid']])}">删除</a></span>
+                            {else}
+                            <span><a href="{:url('admin/ask/askreset',['askid'=>$data['askid']])}">恢复</a></span>
+                            <?php endif;?>
+
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+            <!--用户的问答详情结束-->
+        </div>
+        {/if}
+    </div>

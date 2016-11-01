@@ -1,0 +1,91 @@
+{layout name="layout"}
+<div class="container">
+	<div class="row">
+		<ol class="breadcrumb">
+		  	<li><a href="{:url('index/index/index')}"><span class="glyphicon glyphicon-home"></span></a></li>
+ 			<li><a href="{:url('index/community/peers')}">同行</a></li>
+  			<li class="active">发布同行公告</li>
+		</ol>
+	</div>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1 ">
+			<form action="{:url('index/community/postNotice')}" method="post" class="clearfix">
+				<li class="clearfix">	
+					<div class="input-group post-input">
+ 						 <span class="input-group-addon" style="width:100px;">出行路线</span>
+ 						 <input type="text" name="title" class="form-control" placeholder="写上路线简介标题" style="
+ 						 width:513px;">
+					</div>
+				</li>
+				<li class="clearfix">
+					<div class="input-group post-input" style="float:left;">
+ 						 <span class="input-group-addon" style="width:100px;">出发地:</span>
+ 					 	<input type="text" name="origin" class="form-control" placeholder="例：北京">
+					</div>
+
+					<div class="input-group post-input" style="float:left;margin-left:20px;">
+ 						 <span class="input-group-addon" style="width:100px;">目的地:</span>
+ 					 	<input type="text" name="destination" class="form-control" placeholder="例：北京">
+					</div>
+				</li>
+				<li class="clearfix">
+					<div class="input-group post-input" style="float:left;">
+ 						 <span class="input-group-addon" style="width:100px;">经历时间:</span>
+ 						 <input type="text" name="spendtime" class="form-control" placeholder="例：10天" >
+					</div>
+					<div class="input-group post-input" style="float:left; margin-left:20px;">
+ 						 <span class="input-group-addon" style="width:100px;">预计费用:</span>
+ 						 <input type="text" name="spendmoney" class="form-control" placeholder="例：3块">
+					</div>
+				</li>
+				<li class="clearfix">
+					<div class="input-group post-input" style="float: left">
+ 						 <span class="input-group-addon" style="width:100px;">出发日期:</span>
+ 					 	<input type="text" name="start_time" class="form-control" placeholder="例：2016-1-1">
+					</div>
+					<div class="input-group post-input" style="float: left;margin-left:20px;">
+ 						 <span class="input-group-addon" style="width:100px;">报名截止日期:</span>
+ 						 <input type="text" name="end_time" class="form-control" placeholder="例：2016-1-1">
+					</div>
+				</li>
+				<div class="input-group post-input">
+					<span class="input-group-addon" style="width:100px;">联系方式:</span>
+					<input type="text" name="relation" class="form-control" placeholder="请写下真实的联系方式">
+				</div>
+				<div class="input-group post-input">
+					<span class="input-group-addon" style="width:100px;border-right:1px solid #ccc;">公布类型:</span>
+					<input type="radio" name="style" value="single" style="margin-left: 20px;">个人
+					<input type="radio" name="style" value="team" style="margin-left: 20px;">商家
+
+				</div>
+				<div class="post-input">
+					<div style="height:30px;line-height: 30px;font-size:16px; color:orange;">编辑具体的出游计划:</div>
+					<textarea class="post-content " id="postEditor" name="content">
+					
+					</textarea>
+				</div> 
+				<button type="submit" class="btn btn-info" style="margin-left:800px;margin-top:20px;margin-bottom: 30px;">发布</button>
+			</form>
+		
+		</div>
+		<!-- editor编辑器 开始-->
+		 <script type="text/javascript">
+		        var ue = UE.getEditor('postEditor',{
+		        	initialFrameHeight:300,
+		        	toolbars: [ 
+
+								['simpleupload',
+								'cleardoc',
+								'fontsize',
+								'fontfamily']
+								],
+					});
+		       
+		 </script>
+
+
+		<!-- editor编辑器 结束-->
+		
+	</div>
+
+</div>

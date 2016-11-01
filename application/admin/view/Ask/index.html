@@ -1,0 +1,72 @@
+{layout name="layout"}
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('admin/index/index')}">Home</a></li>
+            <li><a href="#">问题管理</a></li>
+
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group" id="nav_left">
+                <a href="{:url('admin/Index/index')}" class="list-group-item ">
+                    网站信息
+                </a>
+                <a href="{:url('admin/User/index')}" class="list-group-item">用户管理</a>
+                <a href="{:url('admin/Article/index')}" class="list-group-item">文章管理</a>
+                <a href="{:url('admin/Ask/index')}" class="list-group-item active">问题管理</a>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row" style="font-size:16px;width:100%;">
+                <table class="table table-bordered">
+                    <caption><h3 style="text-align:center;">发表问题详情</h3></caption>
+                    <thead>
+                    <tr>
+                        <th>问题ID</th>
+                        <th>标题</th>
+                        <th>关键字</th>
+                        <td>用户名</td>
+                        <th>发表时间</th>
+                        <th>回答</th>
+                        <th>浏览</th>
+                        <th>举报</th>
+                        <th>编辑</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="askdata" id="data"}
+                    <tr align="center">
+                        <td>{$data.askid}</td>
+                        <td>
+                            <a href="{:url('admin/ask/detail',['askid'=>$data['askid']])}">{$data.title}
+                            </a>
+                        </td>
+                        <td>{$data.keywords}</td>
+                        <td><a href="{:url('admin/user/detail',['uid'=>$data.user_id])}">{$data.username}</td>
+                        <td>{$data.create_time}</td>
+                        <td>{$data.answernum}</td>
+                        <td>{$data.scan}</td>
+                        <td>{$data.reportnum}</td>
+                        <td>
+                            <?php if($data['delete_time']=='0000-00-00 00:00:00'):?>
+                            <a href="{:url('admin/ask/delete',['askid'=>$data['askid']])}"> 删除</a></span>
+                            {else}
+                            <a href="{:url('admin/ask/askreset',['askid'=>$data['askid']])}"> 恢复</a></span>
+                            <?php endif;?>
+                            </a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                <div class="page">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

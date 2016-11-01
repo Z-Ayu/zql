@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+    <meta name="keywords" content="竹签录,背包客,旅行,徒步旅行,穷游,路线推荐"/>
+    <meta name="description" content="竹签录,背包客,旅行,徒步旅行,穷游,路线推荐"/>
+    <meta charset="utf-8"/>
+    <meta name="author" content="竹签录"/>
+    <meta name="Copyright" content="竹签录版权所有"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/custom.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/ask.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/manage.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/question.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/custom.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/community.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/application.min.css"/>
+    <link rel="stylesheet" href="__STATIC__/static/css/bootstrap.min.css"/>
+    <link rel="shortcut icon" href="__STATIC__/favicon.ico"/>
+    <script src="__STATIC__/static/js/jquery-1.12.4.min.js"></script>
+    <script src="__STATIC__/static/js/birthday.js"></script>
+    <!-- uEditor -->
+    <script type="text/javascript" src="__STATIC__/static/ueditor/utf8-php/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="__STATIC__/static/ueditor/utf8-php/ueditor.all.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/static/ueditor/utf8-php/lang/zh-cn/zh-cn.js">
+    </script>
+
+
+    <!-- uEditor -->
+</head>
+
+<body style="background-color: #efefef;">
+<div style="display:none;" id="main">
+    <header class="navbar navbar-static-top navbar-default" role="banner">
+        <div class="container" style="background-color: #f8f8f8;">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse"
+                        data-target=".bs-navbar-collapse"><span class="sr-only">菜单</span> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+                <a href="__STATIC__" class="navbar-brand">竹签录</a>
+            </div>
+            <nav class="collapse navbar-collapse bs-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="__STATIC__/index/index/index.html">首页</a></li>
+                    <li><a href="__STATIC__{:url('article/index')}">旅行攻略</a></li>
+                    <li class="dropdown"><a href="__STATIC__{:url('article/commend')}" class="dropdown-toggle"
+                                            data-toggle="dropdown">社区<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="__STATIC__{:url('index/request')}"><span class="glyphicon glyphicon-question-sign" style="color: #f3f;"></span> 问答
+                                <span style="background-color: #c34;color: #fff;padding: 0 5px;">HOT</span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="__STATIC__{:url('article/commend')}"><span class="glyphicon glyphicon-camera" style="color: #f34;"></span> 同城推荐</a></li>
+                            <li class="divider"></li>
+                            <li><a href="__STATIC__{:url('article/near')}"><span class="glyphicon glyphicon-bullhorn" style="color: #34f;"></span> 导游申请</a></li>
+                            <li class="divider"></li>
+                            <li><a href="__STATIC__{:url('community/peers')}"><span class="glyphicon glyphicon-plane" style="color: #3f4;"></span> 同行</a></li>
+                        </ul>
+                    </li>
+                    <li>{if empty(Session('uid'))}<a href="__STATIC__/index/user/signin.html">写游记</a>{else}<a
+                            href="__STATIC__{:url('article/post')}" target="_self">写游记</a>{/if}
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left" action="__STATIC__{:url('index/find')}" role="search"
+                      method="get">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索……" name="keyword"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">GO</button>
+                </form>
+                {if empty($Think.session.uid)}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="__STATIC__{:url('user/signin')}">登录</a></li>
+                    <li><a href="__STATIC__{:url('user/signup')}">注册</a></li>
+                </ul>
+                {else}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="__STATIC__{:url('user/profile')}">个人中心</a></li>
+                    <li><a href="__STATIC__{:url('user/logout')}">注销登录</a></li>
+                </ul>
+                {/if}
+            </nav>
+        </div>
+    </header>
+    {__CONTENT__}
+    <!-- 网页尾部开始 -->
+    <div class="site-footer">
+        <div class="container" style="background-color: #333;">
+            <div class="row">
+                <!-- logo 标志-->
+                <div class="col-md-2">
+                    <div class="logo pull-right" title="竹签录"></div>
+                </div>
+
+                <div class="col-md-7 footer-address pull-left text-left">
+                    <h4 style="margin-top:20px;">友情链接</h4>
+                    <p style="text-indent:2em;">
+                        <?php
+                        $arr = include('friend.php');
+
+                        foreach ($arr as $key => $val) {
+                            echo '<code><a href="' .$key. '" target="_blank">' .$val. '</a></code>&nbsp;&nbsp;';
+                        }
+                        ?>
+                    </p>
+                </div>
+
+                <div class="col-md-3 pull-left text-center">
+                    <p class="row"><img src="__STATIC__/static/images/qrcode.jpg" width="100" class="qrcode"
+                                        title="竹签录微信公众号"/></p>
+                    <p class="row" style="font-size:12px;">关注竹签录微信公众号</p>
+                </div>
+            </div>
+            <!-- row2 -->
+            <div class="row">
+                <div class="text-center">
+                    <p>本网站所有内容均为用户原创，如果涉及隐私安全问题用户需谨慎！</p>
+                    <p>&copy; 2015-
+                        <script type="text/javascript">document.write(new Date().getFullYear())</script>
+                        | Powered by 竹签录 <a href="http://www.miitbeian.gov.cn/" title="工信部">鲁ICP备16033334号</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 网页尾部结束 -->
+</div>
+<div style="position: fixed;width: 518px;height: 30px;border: 1px #aaa solid;z-index: 0;bottom: 0;right: 0;"
+     id="message-alert">
+    <div style="position: relative;z-index: 1;width: 518px;height: 100%;">
+        <div style="z-index: 2 ;height: 30px;text-align: right;padding: 5px 10px;line-height: 20px;font-weight: bold;background-color: #ededed;font-family: Consolas;">
+            <a href="javascript:;" style="cursor: pointer;text-decoration: none;" title="关闭消息框"
+               id="close">打开聊天窗口 &and;</a>
+        </div>
+        <iframe name="chat" src="__STATIC__/tools/chat" width="518px" height="500px" frameborder="0"
+                style="z-index: 3;position: absolute;bottom: 0;right: 0;display:none;"></iframe>
+    </div>
+</div>
+</div>
+<script src="__STATIC__/static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    $('#main').show();
+
+    var flag = 0;
+
+    $('#close').click(function () {
+
+
+        if (0 == flag) {
+            $('iframe[name="chat"]').show();
+            $('#message-alert').css({'height': '530px', 'width': '518px'});
+            $('#close').html('隐藏聊天窗口 &times;');
+            flag = 1;
+        } else {
+            $('iframe[name="chat"]').hide();
+            $('#message-alert').css({'height': '30px', 'width': '518px'});
+            $('#close').html('打开聊天窗口 &and;');
+            flag = 0;
+        }
+    })
+</script>
+<noscript>
+    <div class="alert alert-danger" role="alert">Sorry，你没有开启javascript功能，无法访问我们的网站！</div>
+</noscript>
+</body>
+
+</html>

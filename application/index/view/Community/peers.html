@@ -1,0 +1,186 @@
+{layout name="layout"}
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('index/index/index')}"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li><a href="#">社区</a></li>
+            <li class="active">结伴同行</li>
+        </ol>
+    </div>
+    <div class="row">
+        <!-- 左边开始 -->
+        <div class="col-md-4" style="height:440px;">
+            <div class="hotarea">
+                <h4>驴友推荐热门地区</h4>
+                {foreach $local as $val}
+                <span><a href="__STATIC__/index/article/detail/id/{$val['id']}.html">{$val['destination']}</a></span>
+                {/foreach}
+            </div>
+            <div style="margin-top:30px;">
+                <form action="__STATIC__/index/community/search.html" method="post">
+                <div class="input-group post-input">
+                    <span class="input-group-addon" style="width:80px;">出发地:</span>
+                    <input type="text" name="title" class="form-control" placeholder="（必填）" required style="width:200px;">
+                </div>
+                <div class="input-group post-input">
+                    <span class="input-group-addon" style="width:80px;">目的地:</span>
+                    <input type="text" name="destination" class="form-control" placeholder="（必填）" required style="width:200px;">
+                </div>
+
+                <div class="input-group post-input clearfix">
+				
+				<span class="input-group-addon" style="border-right:1px solid #ccc;">出发时间:
+				</span>
+
+                    <div class="col-md-3 ">
+                        <select class="" name="year" id="sel_year" rel="2000" style="padding:5px 0px;">
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="month" id="sel_month" rel="01"
+                                style="padding:5px 0px;">
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="day" id="sel_day" rel="01"
+                                style="padding:5px 0px;">
+                        </select>
+                    </div>
+
+                </div>
+
+                <script type="text/javascript">
+                    $(function () {
+                        $.ms_DatePicker({
+                            YearSelector: ".sel_year",
+                            MonthSelector: ".sel_month",
+                            DaySelector: ".sel_day"
+                        });
+                        $.ms_DatePicker();
+                    })
+
+                </script>
+                <button type="submit" class="btn btn-warning search"><span class="glyphicon glyphicon-search
+				glyphicon"></span> 拉帮结派
+                </button>
+                </form>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-warning search"><a href="{:url('index/community/post')}"
+                                                                        style="color:white;">发起结伴公告</a></button>
+            </div>
+        </div>
+
+
+        <!-- 左边开始 -->
+
+        <!-- 右边边开始 -->
+        <div class="col-md-8" style="height:440px;">
+            <div class="newest">
+                <div class="bigimg" style="height:320px;width:100%;" id="showbox">
+                    {volist name="imgdata" id="data"}
+                    <li class="hide"><img src="__STATIC__/{$data.first_img}" width="100%" height="320px"></li>
+                    {/volist}
+                </div>
+                <div class="smallimg" id="showbtn">
+                    {volist name="imgdata" id="data"}
+                    <li style="width:25%;float:left" class="no-selected"><img src="__STATIC__/{$data.first_img}"
+                                                                              height="120px" width="100%"></li>
+
+                    {/volist}
+                </div>
+            </div>
+            <!-- 右边顶部轮播图开始 -->
+            <script type="text/javascript">
+                $(function () {
+
+                    var $showlist = $('#showbox li');
+                    var $showbtn = $('#showbtn li');
+                    var iNow = 0;
+                    $showbtn.mouseover(function () {
+                        $(this).removeClass('no-selected').siblings().addClass('no-selected');
+                        var index = $showbtn.index(this);
+                        $showlist.eq(index).removeClass('hide').siblings().addClass('hide');
+                    })
+                    var timer = setInterval(function () {
+                        if (iNow == $showbtn.length) {
+                            iNow = 0;
+                        }
+
+                        $showbtn.eq(iNow).removeClass('no-selected').siblings().addClass('no-selected');
+                        $showlist.eq(iNow).removeClass('hide').siblings().addClass('hide');
+                        iNow++;
+                    }, 1000)
+
+                })
+            </script>
+            <!-- 右边顶部轮播图结束 -->
+        </div>
+        <!-- 右边结束 -->
+    </div>
+    <!-- 下部公告栏开始 -->
+    <div class="row">
+        <div class="newpost">
+            <div style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin-bottom: 20px;"><h2>最新结伴公告</h2>
+            </div>
+            <div class="postlist" id="postbox" style=" margin-left:20px;">
+                {foreach $postdata as $data}
+                <div style="margin-bottom: 10px;border-bottom: 1px dashed #2d6ca2;">
+                    <div class="clearfix" style="display:block;vertical-align: center;">
+                        <img src="__STATIC__/{$data.first_img}" width="230px" height="230px"
+                             style="float:left;">
+                        <div class="left-info" style="float:left;margin-left:30px; ">
+                            <li>
+                                <span class="bigtile"><a href="__STATIC__/index/community/detail/id/{$data.pid}.html">{$data.title}</a></span>
+                                {if $data.style == 'single'}
+                                <span>（个人）</span>
+                                {/if}
+                                {if $data.style=='team'}
+                                <span>(商家)</span>
+                                {/if}
+                            </li>
+
+                            <li>
+                                <span class="titlename">出发地</span>
+                                <span>{$data.origin}</span>
+                            </li>
+                            <li>
+                                <span class="titlename">目的地</span>
+                                <span>{$data.destination}</span></li>
+                            <li>
+                                <span class="titlename">预计费用</span>
+                                <span>{$data.spendmoney}</span>
+                            </li>
+                            <li>
+                                <span class="titlename">截止日期</span>
+                                <span>{$data.end_time}</span>
+                            </li>
+                            <li>
+                                <span class="titlename">出发时间</span>
+                                <span>{$data.start_time}</span>
+                            </li>
+                            <li>
+                                <span class="titlename">累计已有</span>
+                                <span>{$data.join_num}人报名</span>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+        <div class="more" style="margin-left:500px;margin-top:30px;margin-bottom:20px;">
+            {$page}
+        </div>
+    </div>
+
+    <div class="fix-block">
+        <a href="#top" title="返回顶部"><span class="glyphicon glyphicon-open"></span></a>
+    </div>
+    <!-- 下部公告栏结束 -->
+</div>

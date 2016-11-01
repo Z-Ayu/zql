@@ -1,0 +1,77 @@
+{layout name="layout"}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1 main-box">
+            <div class="row">
+                <ol class="breadcrumb" style="border-radius:0px;">
+                    <li><a href="{:url('index/index/index')}">首页</a></li>
+                    <li><a href="{:url('index/index/request')}">社区问答</a></li>
+                    <li class="active" style="color:red;">我要提问</li>
+                </ol>
+            </div>
+            <!-- 提问标题 -->
+            <div class="row">
+                <form action="{:url('index/index/settleask')}" method="post">
+
+                    <!--提问标题开始-->
+                    <h4>问题标题：</h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="title" id="ask-title" placeholder="输入文章标题"
+                               style="border-radius:0px;font-size:16px; outline:none;" maxlength="50">
+                    </div>
+                    <p>
+                        <span id="words-num">0</span>
+                        <span>/50</span>
+                        <span style="color:red;margin-left:10px;">字数不得超过50个</span>
+                    </p>
+                    <script>
+                        $(function () {
+
+                            $('#ask-title').keydown(function () {
+                                var $num = $('#words-num')
+                                var i = $(this).val().length;
+                                $num.html(i);
+                            })
+                        })
+                    </script>
+
+                    <!--提问内容开始-->
+
+                    <div class="content-btn" style="margin-top:5px;margin-bottom:5px;">
+                        <span class="glyphicon glyphicon-plus detail-tip" id="content-start"></span>
+                        <span>问题详细内容：</span>
+                    </div>
+                    <div class="content-edit" style="margin-top:5px;margin-bottom:5px;">
+                        <textarea id="myeditor" name="content"></textarea>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            UE.getEditor('myeditor', {
+                                initialFrameHeight: 200,
+                                toolbars: [
+
+                                    ['simpleupload', 'cleardoc']
+                                ],
+                                iframeCssUrl: '__STATIC__/static/ueditor/utf8-php/themes/iframe.css',// 引入css
+
+                            });
+                        })
+                    </script>
+
+
+                    <h4>输入目的地</h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="keywords" id="ask-title" placeholder="例：北京市"
+                               style="border-radius:0px;font-size:16px; outline:none;">
+                    </div>
+
+                    <div class="submit">
+                        <input type="submit" class="btn btn-warning" value="提交问题">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- 右边内容开始  -->
+    </div>
+
+</div>

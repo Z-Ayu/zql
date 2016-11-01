@@ -1,0 +1,83 @@
+{layout name="layout"}
+<div class="container clearfix article-container">
+    <!-- 顶部作者信息开始 -->
+    <div class="row">
+        <div class="col-md-2 user-avatar">
+            <img src="__STATIC__/static/upload/avatar/1_128x128.jpg"/>
+        </div>
+        <div class="col-md-10">
+            <h1>{$data['title']}</h1>
+            <p>发起人：<a href="__STATIC__/index/user/detail/u/{$data['user_id']}.html">{$data['username']}</a>
+                <span style="color:#999;">发表于：{$data['create_time']}</span>
+            </p>
+            <p>
+        <span title="关注人数">
+           <span class="glyphicon glyphicon-eye-open"></span>关注人数 {$data['attention']}
+        </span>&nbsp;&nbsp;
+                <span title="参加人数">
+          <span class="glyphicon glyphicon-ok-circle"></span>
+          参与人数 {$data['join_num']}
+        </span>&nbsp;&nbsp;
+                {if 1 == $data['status']}&nbsp;已过期
+                {else}
+                <b style="color: #3e4;">进行中……</b>
+                <?php if (in_array($data['pid'], explode(',', Session('user.joined')))):?>
+                <a href="__STATIC__/index/community/join/id/{$data['pid']}/join/{$data['join_num']}/a/cancel.html" style="background-color: #e34;color: #fff;">取消报名</a>
+                <?php else :?>
+                <a href="__STATIC__/index/community/join/id/{$data['pid']}/join/{$data['join_num']}/a/join.html" style="background-color: #00a0e9;color: #fff;padding: 0 5px;">报名</a>
+                <?php endif;?>
+                {/if}
+            </p>
+        </div>
+    </div>
+    <!-- 顶部作者信息结束 -->
+    <hr/>
+    <!-- 文章信息部分开始 -->
+    <div class="row">
+        {if !empty($joinUser)}
+        <p>参加人员：
+        {foreach $joinUser as $id => $v}
+            <a href="__STATIC__/index/user/detail/u/{$id}.html">{$v}</a>
+        {/foreach}
+        </p>
+        {/if}
+        <!-- 文章主体左边开始 -->
+        <div class="col-md-9 article ">
+            <!-- 时间信息开始 -->
+            <div class="row ready">
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-time"></span>
+                    <span style="color:#d9534f;">发布时间</span>：{$data['create_time']}
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-dashboard"></span>
+                    <span style="color:#d9534f;">开始时间</span>：{$data['start_time']}
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    <span style="color:#d9534f;">结束时间</span>：{$data['end_time']}
+                </div>
+            </div>
+            <div class="row ready">
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                    <span style="color:#d9534f;">出发地</span>：{$data['origin']}
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-screenshot"></span>
+                    <span style="color:#d9534f;">目的地</span>：{$data['destination']}
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-euro"></span>
+                    <span style="color:#d9534f;">预计费用</span>：{$data['spendmoney']}￥
+                </div>
+            </div>
+            <!-- 时间信息结束 -->
+            <!-- 内容部分开始 -->
+            <div class="article-detail">
+                {$data['content']}
+            </div>
+            <!-- 内容部分结束 -->
+        </div>
+    </div>
+</div>

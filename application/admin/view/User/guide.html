@@ -1,0 +1,41 @@
+{layout name="layout"}
+<!--导航栏-->
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('/admin/user/index')}">用户管理</a></li>
+            <li><a href="{:url('/admin/user/guide')}">导游申请</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-offset-3 guideinfo col-md-6">
+                <div class="username">
+                    <span class="left-span">用户名：</span>
+                    <span>
+                    <a href="{:url('admin/user/detail',['uid'=>$data.uid])}" title="查看详情">{$data.name}</a>
+                </span></div>
+                <div class="username"><span class="left-span">真实姓名：</span><span>{$data.realname}</span></div>
+                <div class="username"><span class="left-span">身份证：</span><span>{$data.real_id}</span></div>
+                <div class="id_img" style="padding:5px 10px;"><span
+                        style="color:orange;font-size:16px;font-weight:bold;">身份证正反面图片:</span></div>
+                <div class="username">
+                    <img src="__STATIC__/static/upload/{$front}" width="256px" height="256px">
+                    <img src="__STATIC__/static/upload/{$back}" width="256px" height="256px"></div>
+                {if $guide}
+                <div class="username">
+                    <span class="left-span">导游证（图片）:</span>
+                    <img src="__STATIC__/static/upload/{$guide}" width="256px" height="256px">
+                </div>
+                {/if}
+                <div class="settle" style="margin:0 auto;">
+                    <button type="button" class="btn btn-success" style="margin-left:200px;">
+                        <a href="{:url('admin/user/guideagree',['id'=>$data.id,'uid'=>$data['uid']])}">通过<a>
+                    </button>
+
+                    <button type="button" class="btn btn-danger" style="margin-left:40px;">
+                        <a href="{:url('admin/user/guidereject',['id'=>$data.id,'uid'=>$data['uid']])}">驳回</a>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>

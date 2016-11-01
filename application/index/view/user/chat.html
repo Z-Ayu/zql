@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>竹签录|在线聊天</title>
+    <link rel="stylesheet" href="/static/css/chat.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <div class="chat-top">
+            <div class="show-bar">
+                <span class="talkTo"><span class="icon-user"></span><?=Session('user')['username'];?></span>
+                <input type="hidden" value="1" name="userto"/>
+                <input type="hidden" value="<?=Session('uid');?>" name="userid"/>
+                <a href="javascript:;" title="关闭对话框"><span class="icon-remove" style="float: right;"></span></a>
+            </div>
+            <div id="detail" style="overflow-y: scroll;height: 250px;">
+                <div class="show-top">
+
+                </div>
+            </div>
+            <div class="show-bar">
+            </div>
+        </div>
+        <div class="chat-bottom">
+            <div class="chat-window">
+                <textarea class="input-window" placeholder="输入消息开始聊天吧……"></textarea>
+            </div>
+            <div class="submit-bar">
+                <a href="javascript:(void 0)" title="发送消息"><img src="/static/img/emotion/send_btn.jpg"/></a>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+
+    </div>
+</div>
+<script src="/static/js/jquery-1.12.4.min.js"></script>
+<script src="/static/js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{layout name="layout"}
+<div class="container article-container">
+    <!-- 路径导航 -->
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="__STATIC__/admin/index/index">后台管理</a></li>
+            <li><a href="__STATIC__/admin/article/index">文章管理</a></li>
+            <li class="active">文章详情</li>
+        </ol>
+    </div>
+    <!-- 文章详情 -->
+    <div class="row">
+        <div class="col-md-2 user-avatar"><img src="__STATIC__/{$avatar}_128x128.jpg"/></div>
+        <div class="col-md-10">
+            <h1>{$data['title']}</h1>
+            <p>作者：<a href="{:url('admin/user/detail',['uid'=>$data['uid']])}">
+                {$data['author']}</a>
+                <b style="font-size:10px;">等级：<span style="background:orange;padding: 3px 10px;border-radius: 10px;"><i>lv.{$level}</i></span></b>
+                <span style="color:#cdcdcd;">发表于：{$data['create_time']}</span>
+
+            </p>
+            <p>
+                <span title="阅读量">
+                    <span class="glyphicon glyphicon-eye-open"></span> {$data['read_num']}
+                </span>&nbsp;&nbsp;
+
+                <span title="顶">
+                    <span class="glyphicon glyphicon-thumbs-up">
+			         </span>
+                    <span>赞的次数：{$data['good']}
+                    </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+            </p>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-9 article ">
+            <!-- 文章内容区 -->
+            <div class="row ready">
+                <div class="col-md-4"><span class="glyphicon glyphicon-time"></span> <span
+                        style="color:#d9534f;">出发时间</span>：{$data['go_off']}
+                </div>
+                <div class="col-md-4"><span class="glyphicon glyphicon-map-marker"></span> <span style="color:#d9534f;">目的地</span>：<a
+                        href="">{$data['destination']}</a></div>
+                <div class="col-md-4"><span class="glyphicon glyphicon-calendar"></span> <span style="color:#d9534f;">历经时间：</span>：{$data['take']}天
+                </div>
+            </div>
+            {$data['content']}
+        </div>
+    </div>
+    <!-- 评论区 -->
+    <div class="row" style="margin-top:40px">
+        <div>
+            <table class="table table-bordered table-hover">
+                <caption><h3>文章评论</h3></caption>
+                <thead>
+                <tr>
+                    <th style="text-align:center">评论ID</th>
+                    <th style="text-align:center">用户名</th>
+                    <th style="text-align:center">评论内容</th>
+                    <th style="text-align:center">评论时间</th>
+                    <th style="text-align:center">编辑</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $commentdata as $data}
+                <tr align="center">
+                    <td>{$data['a_cid']}</td>
+                    <td><a href="{:url('admin/user/detail',['uid'=>$data['user_id']])}">{$data.username}</a></td>
+                    <td>{$data.content}</td>
+                    <td>{$data.create_time}</td>
+                    <?php if($data['delete_time'] == '0000-00-00 00:00:00'):?>
+                    <td><a href="/admin/article/delete/cid/{$data['a_cid']}">删除</a></td>
+                    {else}
+                    <td><a href="/admin/article/commentreset/cid/{$data['a_cid']}">已删除</a></td>
+                    <?php endif;?>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            {$page}
+        </div>
+    </div>
+
+
+</div>

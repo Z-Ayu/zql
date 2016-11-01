@@ -1,0 +1,47 @@
+{layout name="layout"}
+<div class="container" style="margin-bottom: 20px;">
+    <div class="article-list">
+        <div class="articles">
+            {foreach $datas as $data}
+            <article class="row" style="padding: 10px 15px;">
+                <div class="desc">
+                    <a class="title" href="__STATIC__/index/article/detail/id/{$data['id']}.html"
+                       target="_self">{$data['title']}</a>
+                    {if 1 == $data['great']}
+                    <span class="label label-warning">精</span>
+                    {/if}<br/><br/>
+
+                    <p class="time" style="color:#a1a1a1;">
+                        <span>作者：<a
+                                href="__STATIC__/index/user/detail/u/{$data['uid']}.html">{$data['author']}</a></span>
+                        <span title="发表时间"> 发表于：{$data['create_time']}</span>
+                    </p>
+                    <div class="brief"><?=mb_substr(strip_tags($data['content']), 0, rand(150,280));?></div>
+                    <div class="author">
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <?php
+                    $pre = '/<img(.*)src="(.*)"/imsU';
+                    preg_match_all($pre, $data['content'], $result);
+                    if (!empty($result[2])) {
+                    $i = 0;
+                    foreach ($result[2] as $val) {
+                    if (2 >= $i) {
+                    echo '<img class="col-md-4" src="' . $val . '" style="max-width: 320px;"/>';
+                    }
+                    $i++;
+                    }
+                    }
+                    ?>
+                </div>
+            </article>
+            {/foreach}
+        </div>
+        <div class="text-center">
+            {$datas->render()}
+        </div>
+    </div>
+    <!-- 文章列表结束 -->
+</div>

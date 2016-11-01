@@ -1,0 +1,92 @@
+{layout name="layout"}
+<div class="container">
+    <div class="post-nav row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('index/index/index')}">首页</a></li>
+            <li><a href="#" style="color:red;">发表游记</a></li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 clearfix">
+            <form action="{:url('index/article/postSubmit')}" method="post" class="clearfix">
+                <div class="input-group post-input">
+                    <span class="input-group-addon" style="width:100px;">标题:</span>
+                    <input type="text" name="title" class="form-control" placeholder="写入标题内容（必填）" style="width:400px;">
+                </div>
+                <div class="input-group post-input">
+                    <span class="input-group-addon" style="width:100px;">目的地:</span>
+                    <input type="text" name="destination" class="form-control" placeholder="写入本篇游记的描述地（必填）"
+                           style="width:400px;">
+                </div>
+                <div class="input-group post-input">
+                    <span class="input-group-addon" style="width:100px;">历经时间:</span>
+                    <input type="text" name="spendtime" class="form-control" placeholder="（必填）" style="width:100px;">
+                </div>
+                <div class="input-group post-input clearfix">
+				
+					<span class="input-group-addon" style="border-right:1px solid #ccc;">出发时间:
+					</span>
+
+                    <div class="col-md-2 ">
+                        <select class="form-control" name="year" id="sel_year"
+                                rel="2000">
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select class="form-control" name="month" id="sel_month"
+                                rel="1">
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select class="form-control" name="day" id="sel_day"
+                                rel="1">
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="post-input">
+                    <div style="height:30px;line-height: 30px;font-size:16px; color:orange;">编辑游记内容:</div>
+                    <textarea class="post-content " id="postEditor" name="content">
+					
+					</textarea>
+                </div>
+                <button type="submit" class="btn btn-info"
+                        style="margin-left:800px;margin-top:20px;margin-bottom: 30px;">提交
+                </button>
+            </form>
+
+        </div>
+        <!-- editor编辑器 开始-->
+        <script type="text/javascript">
+            var ue = UE.getEditor('postEditor', {
+                initialFrameHeight: 400,
+                toolbars: [
+
+                    ['simpleupload',
+                        'cleardoc',
+                        'fontsize',
+                        'fontfamily']
+                ],
+            });
+            $(function () {
+
+                $.ms_DatePicker({
+                    YearSelector: ".sel_year",
+                    MonthSelector: ".sel_month",
+                    DaySelector: ".sel_day"
+                });
+                $.ms_DatePicker();
+            });
+        </script>
+
+
+        <!-- editor编辑器 结束-->
+
+    </div>
+
+</div>

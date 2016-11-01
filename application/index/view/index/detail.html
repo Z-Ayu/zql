@@ -1,0 +1,316 @@
+{layout name="layout"}
+<div class="container-fluid font-yh">
+    <!-- 右边部分开始 -->
+    <div class="col-md-8 col-md-offset-1 clearfix">
+        <div class="row ">
+            <p class="detail-nav bg-gray">
+                <a href="{:url('index/index/request')}"><span>问题详情</span></a>->
+                <span style="color:red;">{$detail[0]['title']}</span>
+
+            </p>
+        </div>
+        <!-- 问题内容开始 -->
+        <div class="row detail-box">
+            <div class="detail-main">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                <span class="detail-title">{$detail[0]['title']}</span>
+            </div>
+            <div class="detail_content">
+                {$detail[0]['content']}
+            </div>
+            {if $detail[0]['keywords']}
+            <div class="detail_key">
+                <span>{$detail[0]['keywords']}</span>
+            </div>
+            {/if}
+            <div class="detail_base" style="float:right;">
+                <img class="img-circle" src="__STATIC__/{$detail[0]['avatar']}_32x32.jpg">
+                <span class="username">
+						<a href="{:url('index/user/detail',['u'=>$detail[0]['uid']])}">{$detail[0]['username']}</a>
+					</span>
+                <span class="createtime">
+						{$detail[0]['create_time']}
+					</span>
+            </div>
+        </div>
+        <div class="row detail-power">
+            <!-- 如果已经关注过 -->
+            {if $is_attention}
+            <a href="{:url('index/index/cancelatte',['askid'=>$askid])}" style="color:#444;">取消关注</a>
+            {else}
+            <a href="{:url('index/index/attention',['askid'=>$askid])}" style="color:#444;">关注</a>
+            {/if}
+            <a href="#add" class="bg-org">回答</a>
+            <div class="detail-scan" style="float:right;position: relative;" id="power">
+                {if $is_report}
+                <span>你举报过该问题 |</span>
+                {else}
+                <span class="hide" id="report"> 举报 |</span>
+                {/if}
+                <span> 浏览：{$detail[0]['scan']} |</span>
+                <span> 关注：{$attention_num} </span>
+            </div>
+
+        </div>
+        <!-- 回答列表 -->
+        <div class="row requst">
+            <div class="request-top">{$detail[0]['answernum']}个回答</div>
+            <!-- 循环开始 -->
+            {volist name="answer" id="data"}
+            <div class="row request-box">
+                <div class="col-md-1">
+                    <img src="__STATIC__/{$data.avatar}_128x128.jpg" width="48" height="48"
+                         style="display:block;margin:0 auto;">
+                    <div class="request-great" style="cursor: pointer;" id="great{$data.hid}">
+                        <i></i>
+                        <span id="zanspan{$data.hid}">{$data.greatnum}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-11">
+                    <div class="an-user-info">
+                        <span><a href="{:url('index/user/detail',['u' => $data.uid])}">{$data.username}</a></span>
+                        <span>{$data.create_time}</span>
+                        <span class="level-style"><i>lev.{$data.level}</i></span>
+                    </div>
+                    <div class="request_detail">
+                        {$data.content}
+                    </div>
+                    <!-- 回答的回复开始 -->
+                    <div class="two-replay">
+                        <div class="replay-top">
+                            <span class="" id="commentnum{$data.hid}">评论：</span>
+                            <span class="report"> 举报</span>
+
+                        </div>
+                        <div class="replay_detail">
+                            <ul class="" id="list{$data.hid}">
+
+                            </ul>
+                            <div class="two-reply">
+                                <textarea style="width:100%;height:70px;" placeholder="内容不能为空"></textarea>
+                                <input type="hidden" value="{$data.hid}" id="hidden{$data.hid}">
+                                <button type="button" class="btn btn-info" style="margin-left:630px; margin-top:10px;"
+                                        id="commentreply{$data.hid}">回复
+                                </button>
+
+                            </div>
+                        </div>
+                        <!-- 处理评论个数的ajax开始 -->
+                        <!-- 处理评论个数的ajax开始 -->
+                        <!-- 遍历回答的回复的ajax开始-->
+                        <script type="text/javascript">
+                            $(function () {
+                                var $answer_id = $('#hidden{$data.hid}').attr('value');
+
+                                $.ajax({
+                                    url: "{:url('index/index/commentlist')}",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {
+                                        'answer_id': $answer_id,
+                                    },
+                                    success: function (data) {
+                                        $.each(data, function (n, i) {
+                                            var $ullist = $('#list{$data.hid}');
+                                            var str = '';
+
+                                            str = '<li class="clearfix li-bottom-border"><div class="col-md-1"><img src="/' + i.avatar + '_32x32.jpg"></div><div class="col-md-11"><div class="replay-info"><span>' + i.username + '</span><span>' + i.create_time + '</span><span>回复</span><span>举报</span></div><div><div  class="replay-content">' + i.content + '</div><li>';
+                                            $ullist.append(str);
+                                        })
+                                    }
+                                })
+                            })
+                        </script>
+                        <!-- 遍历回答的回复的ajax结束 -->
+
+                        <!-- 回答的评论的ajax开始 -->
+                        <script type="text/javascript">
+                            $(function () {
+                                var $sub = $('#commentreply{$data.hid}');
+                                $sub.click(function () {
+                                    var $content = $sub.siblings('textarea')[0].value;
+                                    var $hid = $(this).siblings('input').attr('value');
+                                    if ($content) {
+                                        $.ajax({
+                                            url: "{:url('index/index/comment')}",
+                                            type: "post",
+                                            dataType: "json",
+                                            data: {
+                                                "content": $content,
+                                                "hid": $hid,
+                                            },
+                                            success: function (data) {
+                                                if (data.status) {
+                                                    //往ul中追加内容
+                                                    var str = '';
+                                                    str = '<li class="clearfix li-bottom-border"><div class="col-md-1"><img src="/' + data.avatar + '_32x32.jpg"></div><div class="col-md-11"><div class="replay-info"><span>' + data.username + '</span><span>' + data.time + '</span><span>回复</span><span>举报</span></div><div><div  class="replay-content">' + data.content + '</div><li>';
+                                                    $ullist = $('#list{$data.hid}');
+                                                    $ullist.append(str);
+
+                                                } else {
+                                                    alert('请登录后再发表评论')
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+
+                            })
+                        </script>
+                        <!-- 回答的评论的ajax结束 -->
+                    </div>
+
+                    <!-- 回答的回复结束 -->
+                </div>
+            </div>
+            <!-- 实现点赞功能开始 -->
+            <script type="text/javascript">
+                $(function () {
+                    var $great = $('#great{$data.hid}');
+                    $great.mouseover(function () {
+                        $(this).addClass('request-great-active');
+                    })
+                    $great.mouseout(function () {
+                        $(this).removeClass('request-great-active');
+                    })
+                    $great.click(function () {
+
+                        $.ajax({
+                            asnyc: false,
+                            url: "{:url('index/index/addGreat')}",
+                            type: "post",
+                            dataType: 'json',
+                            data: {
+                                "answer_id": $('#hidden{$data.hid}').attr('value'),
+                            },
+                            success: function (data) {
+                                var $num = $('#zanspan{$data.hid}').html();
+                                $num = $num * 1 + 1;
+                                $('#zanspan{$data.hid}').html($num);
+
+
+                            }
+                        });
+                    })
+                })
+            </script>
+            {/volist}
+
+        </div>
+
+        <!-- 回答列表结束 -->
+        <!-- 给问题添加回答开始 -->
+        <div class="row add-reply" id="add">
+            <div class="col-md-1" style="color:orange;">
+                <h3>添加回答</h3>
+            </div>
+            <div class="col-md-11">
+                <div id="myeditor2"></div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-warning button-width2" id="hd-warning">请登录后再进行回答</button>
+                <button type="button" class="btn btn-info button-width2" id="hd-reply">提交回答</button>
+            </div>
+        </div>
+        <!-- ueditor编辑器	 -->
+        <script type="text/javascript">
+            $(function () {
+                UE.getEditor('myeditor2', {
+                    initialFrameHeight: 200,
+                    toolbars: [
+
+                        ['simpleupload', 'cleardoc']
+                    ],
+                });
+            })
+        </script>
+        <!--  编辑器结束  -->
+
+        <!-- 使用ajax提交回答 -->
+        <script type="text/javascript">
+            $(function () {
+                var $warning = $('#hd-warning');
+                $warning.hide();
+                $('#hd-reply').click(function () {
+
+                    var $content = UE.getEditor('myeditor2').getContent();
+                    //var $askid = $(this).attr('alt');
+                    if (!$content) {
+                        alert('内容不能为空');
+
+                    } else {
+                        $.ajax({
+                            url: "{:url('index/index/addanswer')}",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                askid: {$askid},
+                                content: $content,
+                            },
+                            success: function (data) {
+                                if (!data.status) {
+                                    $warning.fadeIn(2000).siblings().hide();
+                                } else {
+                                    if (data.tips) {
+                                        alert('发表成功');
+                                        $('#hd-reply').show().siblings().hide();
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+
+        </script>
+        <!-- 使用ajax提交回答结束 -->
+
+        <!-- 给问题添加回答结束 -->
+        <!-- 举报处理 开始-->
+        <script type="text/javascript">
+            var flag = 0
+            $(function () {
+                var $father = $('#power');
+                var $report = $('#power #report');
+
+                $father.mouseover(function () {
+                    $report.removeClass('hide');
+                })
+                $report.click(function () {
+                    if (flag == 0) {
+                        $.ajax({
+                            url: "{:url('index/index/report')}",
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                "askid": {$askid},
+                            },
+                            success: function (data) {
+                                if (data.tips) {
+                                    alert('举报成功');
+                                    flag = 1;
+                                    $report.html('已举报');
+                                }
+                            }
+                        })
+                    }
+                })
+
+                $father.mouseout(function () {
+                    $(this).children('#report').addClass('hide');
+                })
+            })
+        </script>
+        <!-- 举报处理 开始-->
+    </div>
+
+    <!-- 回到顶部按钮 -->
+
+    <div class="fix-block">
+        <a href="#top" title="返回顶部"><span class="glyphicon glyphicon-open"></span></a>
+    </div>
+    <!-- 回到顶部按钮结束 -->
+
+</div>

@@ -1,0 +1,154 @@
+{layout name="layout"}
+
+<div class="container-fluid clearfix">
+    <!-- 轮播开始 -->
+    <div class="row">
+        <div id="carousel-example-generic" class="carousel" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <?php for ($key = 0; $key < count($carousel); $key++):?>
+                <?php if (0 == $key) :?>
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <?php else :?>
+                <li data-target="#carousel-example-generic" data-slide-to="{$key}"></li>
+                <?php endif;endfor;?>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <?php
+                 for ($key = 0; $key < count($carousel); $key++):?>
+                <?php if (0 == $key) :?>
+                <div class="item active">
+                    <?php else :?>
+                    <div class="item">
+                        <?php endif;?>
+                        <?php list($url,$title) = each ($carousel);?>
+                        <a href="__STATIC__/index/article/detail/id/{$url}.html">
+                            <?php
+
+                             if (empty($img[$key])) :?>
+                            <img src="__STATIC__/static/img/{$key}.jpg" width="95%"
+                                 style="margin:auto;max-height: 400px;"/>
+                            <?php else :?>
+                            <img src="__STATIC__{$img[$key]}" width="95%"
+                                 style="margin:auto;max-height: 400px;"/>
+                            <?php endif;?>
+                        </a>
+                        <div class="carousel-caption"><a href="__STATIC__/index/article/detail/id/{$url}.html"
+                                                         style="color: #fff;"><h3>{$title}</h3></a></div>
+
+                    </div>
+                    <?php endfor;?>
+                </div>
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev"> <span
+                        class="glyphicon glyphicon-chevron-left"></span> <span class="sr-only">上一个</span> </a> <a
+                    class="right carousel-control" href="#carousel-example-generic" role="button"
+                    data-slide="next"> <span
+                    class="glyphicon glyphicon-chevron-right"></span> <span class="sr-only">下一个</span> </a></div>
+        </div>
+        <!-- 轮播结束 -->
+
+        <!-- 文章开始处 -->
+        <div class="row margin-top-20">
+            <div class="col-md-2 side-bar-t">
+                <div class="recommended-articles">
+                    <h3>最新推荐</h3>
+                    <div>
+                        {foreach $tui as $key => $val}
+                        <article class="row">
+                            <div class="desc col-md-12">
+                                {if 0 == $key}
+                                <span class="label label-info">New</span>
+                                {/if}<a href="__STATIC__/index/article/detail/id/{$val['id']}.html">{$val['title']}</a>
+                                <div class="brief text-ellipsis"
+                                     style="font-size: 12px;"><?=mb_substr(strip_tags($val['content']),0.50);?></div>
+                            </div>
+                        </article>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            <!-- 侧边栏结束 -->
+            <div class="col-md-8">
+                <div class="article-list">
+                    <div class="articles">
+                        {foreach $datas as $data}
+                        <article class="row">
+                            <div class="col-md-4">
+                                <?php
+                            $pre = '/<img(.*)src="(.*)"/imsU';
+                            preg_match($pre, $data['content'], $result);
+                            if (empty($result)):
+                            ?>
+                                <a class="pic" href="__STATIC__/index/article/detail/id/{$data['id']}.html">
+                                    <img src="__STATIC__/static/img/<?=rand(1,3);?>.jpg"/>
+                                </a>
+                                <?php else :?>
+                                <a class="pic" href="__STATIC__/index/article/detail/id/{$data['id']}.html">
+                                    <img src="<?=$result[2];?>"/>
+                                </a>
+                                <?php endif;?>
+                            </div>
+                            <div class="desc col-md-8">
+                                <a class="title" href="__STATIC__/index/article/detail/id/{$data['id']}.html">{$data['title']}</a>
+                                {if 1 == $data['great']}
+                                <span class="label label-warning">精</span>
+                                {/if}
+                                <div class="brief"><?=mb_substr(strip_tags($data['content']), 0, rand(150,230));?></div>
+                                <div class="author">
+              	<span class="time" style="color:#a1a1a1;">
+                	<span>作者：<a href="__STATIC__/index/user/detail/u/{$data['uid']}.html">{$data['author']}</a></span>
+                	<span title="发表时间"> 发表于：{$data['create_time']}</span>
+                </span>
+                                </div>
+                            </div>
+                        </article>
+                        {/foreach}
+                    </div>
+                    <div class="text-center">
+                        {$datas->render()}
+                    </div>
+                </div>
+                <!-- 文章列表结束 -->
+            </div>
+            <div class="col-md-2 side-bar-t">
+                <div class="recommended-articles weather">
+                    <h3>天气咨询</h3>
+                    <iframe allowtransparency="true" frameborder="0" width="140" height="36" scrolling="no"
+                            src="//tianqi.2345.com/plugin/widget/index.htm?s=3&z=3&t=0&v=0&d=3&bd=0&k=000000&f=&q=1&e=1&a=1&c=54511&w=160&h=36&align=center"></iframe>
+                </div>
+
+                {if !empty($Think.session.uid)}
+                <!-- 登录后显示 -->
+                <div class="recommended-articles">
+                    <h3>好友推荐</h3>
+                    {if !empty($friends)}
+                    {foreach $friends as $val}
+                    <?php
+                $arr[$val['uid']] = $val['username'];
+                if (!in_array($arr, json_decode(Session('user')['friends'],true))) :
+                ?>
+                    <article class="row">
+                        <div class="col-md-2 user-avatar">
+                            <img src="__STATIC__/{$val['avatar']}_32x32.jpg"/>
+                        </div>
+                        <div class="col-md-10">
+                            <a href="__STATIC__/index/user/detail/u/{$val['uid']}.html">{$val['username']}</a>
+                            <p style="font-size: 12px;">{$val['motto']}</p>
+                        </div>
+                    </article>
+                    <?php endif;?>
+                    {/foreach}
+                    {else}
+                    设置个人资料寻找更多好友哦……
+                    {/if}
+                </div>
+                <!-- 好友推荐结束 -->
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>

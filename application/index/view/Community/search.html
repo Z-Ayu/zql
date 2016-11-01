@@ -1,0 +1,20 @@
+{layout name="layout"}
+<div class="container" style="min-height: 500px;">
+
+    <h4>查询到“{$re|count}”个相关的同行公告</h4>
+    <hr/>
+    <div class="row" style="font-size: 12px;">
+        {foreach $re as $val}
+        <p style="text-indent: 2em;font-size: 16px;"><a href="__STATIC__/index/community/detail/id/{$val['pid']}.html">{$val['title']}</a>
+        </p>
+        <p style="text-indent: 2em;padding:5px 10px;">发起人：<a href="__STATIC__/index/user/detail/u/{$val['user_id']}.html">{$val['username']}</a>
+            发布时间：{$val['create_time']} 截止时间：{$val['end_time']}
+        </p>
+        <p style="text-indent: 2em;padding:5px 10px;line-height: 24px;">
+            <?=mb_substr(strip_tags($val['content']),0,150);?>
+        </p>
+        <hr/>
+        {/foreach}
+    </div>
+
+</div>

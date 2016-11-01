@@ -1,0 +1,73 @@
+{layout name="layout"}
+<div class="container-fluid">
+    <div clas="row">
+        <div class="col-md-8 col-md-offset-1">
+            <div class="post-nav">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{:url('index/index/request')}">问题详情</a>
+                    </li>
+                    <li><a href="#" style="color:red;">搜索</a></li>
+                </ol>
+            </div>
+
+
+            <div class="row" style="min-height:400px;">
+                {if $count}
+                <div class="search-result">
+                    <div style="height:50px;border-bottom: 1px solid #444;">
+                        <h3>共有{$count}条结果</h3>
+                    </div>
+                    <div class="search-list hot-block">
+                        <ul>
+                            {volist name="newdata" id="data"}
+                            <li>
+                                <div class="question-title"><a
+                                        href="{:url('index/index/detail',['askid'=>$data['askid']])}"
+                                        style="color:orange"><h4>{$data.title}</a></h4>
+                                </div>
+
+
+                                <div class="title-block row">
+                                    {if $data['first_img']}
+                                    <div class="col-md-2">
+                                        <img src="{$data['first_img']}" width="128" height="128">
+                                    </div>
+                                    {/if}
+                                    <div class="text col-md-10">
+                                        <p id="content-block">
+                                            <?php
+											echo strip_tags($data['content']);
+										?>
+                                        </p>
+                                    </div>
+                                </div>
+                                {if $data['keywords']}
+                                <div class="keywords">
+                                    <button class="button-style">{$data['keywords']}</button>
+                                </div>
+                                {/if}
+                                <div class="anotherinfo row clearfix">
+                                    <span class="glyphicon glyphicon-eye-open" title="阅读量"></span>
+                                    <i>{$data['scan']}</i>
+                                    <span> 回答：{$data['answernum']}</span>
+                                    <span>发布于：{$data['create_time']}</span>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div>
+                {else}
+                <div class="search-result">
+
+                    还没有关于相关的问题及回答，我去<a href="{:url('index/index/request')}">提问</a>
+                </div>
+                {/if}
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>

@@ -1,0 +1,60 @@
+{layout name="layout"}
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{:url('admin/index/index')}">Home</a></li>
+            <li><a href="{:url('admin/ask/index')}">问题管理</a></li>
+            <li><a href="{:url('admin/ask/detail')}">问题详情</a></li>
+        </ol>
+    </div>
+    <div class="row askdetail col-md-offset-1 col-md-10">
+        <div style="border-bottom:1px solid #ccc">
+            <h3>{$askdata['title']}</h3>
+        </div>
+
+        <div>
+            {$askdata['content']}
+        </div>
+
+        <div class="comment">
+            <table class="table table-bordered">
+                <caption><h3 style="text-align:center;">问题回答详情</h3></caption>
+                <thead>
+                <tr>
+                    <th>回答ID</th>
+                    <th>用户名</th>
+                    <th>发表时间</th>
+                    <td>内容</td>
+                    <td>点赞</td>
+                    <td>回复</td>
+                    <th>编辑</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="answerdata" id="data"}
+                <tr align="center">
+                    <td>{$data.hid}</td>
+                    <td>
+                        <a href="{:url('admin/user/detail',['uid'=>$data['user_id']])}">{$data.username}</a>
+                    </td>
+                    <td>{$data.create_time}</td>
+
+                    <td>{php}echo mb_substr(strip_tags($data['content']),0,8);{/php}</td>
+
+                    <td>{$data.greatnum}</td>
+                    <td>{$data.replynum}</td>
+                    <td>
+                        <?php if($data['delete_time']=='0000-00-00 00:00:00'):?>
+                        <a href="{:url('admin/ask/answerdelete',['hid'=>$data['hid']])}"> 删除</a></span>
+                        {else}
+                        <a href="{:url('admin/ask/answerreset',['hid'=>$data['hid']])}"> 恢复</a></span>
+                        <?php endif;?>
+                        </a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

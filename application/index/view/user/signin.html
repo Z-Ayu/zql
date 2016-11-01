@@ -1,0 +1,84 @@
+{layout name="nofooter"}
+<div class="container-fluid clearfix article-container sign" style="margin-top:0;">
+    <!-- 主体开始 -->
+    <div class="sign container-fluid clearfix article-container" style="margin-top:0; height:calc(100% - 51px);">
+        <!-- 主体开始 -->
+
+        <div class="row text-center show-table">
+            <div class="td" id="login">
+
+                <div id="alert" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+                    <button type="button" class="close" data-dismiss="alert"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <strong>警告!</strong>
+                </div>
+
+                <h3 style="color:#fff; margin-bottom:20px;text-align:center;">登录到竹签录</h3>
+                <form class="form-horizontal" role="form" action="__STATIC__{:url('user/login')}" method="post">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">用户名：</div>
+                            <input class="form-control" type="text" name="username" placeholder="输入用户名或邮箱" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">密　码：</div>
+                            <input class="form-control" type="password" name="password" placeholder="输入账号密码" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">验证码：</div>
+                            <input class="form-control" type="text" name="code" placeholder="输入验证码" required>
+                        </div>
+                    </div>
+                    <div class="form-group"><img id="verify_img" src="{:captcha_src()}" title="点击刷新验证码"
+                                                 onclick="refreshVerify()"></div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <input type="submit" class="btn btn-primary" value="登　录"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- 主体结束 -->
+    </div>
+    <!-- 主体结束 -->
+    <p style="color:#a1a1a1;">&copy; 2015-
+        <script type="text/javascript">document.write(new Date().getFullYear())</script>
+        | Powered by 竹签录 <a href="http://www.miitbeian.gov.cn/" title="工信部">鲁ICP备16033334号</a></p>
+</div>
+</div>
+<script>
+    function refreshVerify() {
+        $('#verify_img').attr("src", "{:captcha_src()}");
+    }
+
+    $(function () {
+        setInterval(function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/index/user/ajaxLogin.html",
+                dataType: 'json',
+                data: {
+                    "username": $('input[name="username"]').val(),
+                    "password": $('input[name="password"]').val(),
+                    "code": $('input[name="code"]').val()
+                },
+                success: function (msg) {
+                    if (0 == msg.code) {
+                        $('#alert').hide();
+                        $('input[type="submit"]').attr("disabled", false);
+                    } else {
+                        $('#alert').children('span').remove();
+                        $('#alert').show().append('<span>' + msg.msg + '</span>');
+                        $('input[type="submit"]').attr("disabled", true);
+                    }
+                }
+            });
+        }, 1000);
+    });
+</script>

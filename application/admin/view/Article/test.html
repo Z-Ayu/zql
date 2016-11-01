@@ -1,0 +1,39 @@
+<script text="text/javascript">
+    var Mychart = echarts.init(document.getElementById('picturepie'));
+    //alert(myChart);
+    option = {
+        title: {
+            text: '�μǵ����ֲ�',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        calculable: true,
+        series: [
+            {
+                name: '�μ�����',
+                type: 'pie',
+                radius: '66%',
+                center: ['45%', '43%'],
+                data: [
+                    {value: 45, name: 'ֱ�ӷ���'},
+                    {value: 310, name: '�ʼ�Ӫ��'},
+                    {value: 234, name: '���˹��'},
+                    {value: 135, name: '��Ƶ���'},
+                    {value: 1548, name: '��������'}
+                ]
+            }
+        ]
+    };
+    $.ajax({
+        url: '__STATIC__/admin/Article/select',
+        type: 'post',
+        dataType: 'json',
+        succecc: function (data) {
+
+        }
+    });
+    Mychart.setOption(option);
+</script>
